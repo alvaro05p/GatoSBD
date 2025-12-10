@@ -6,18 +6,23 @@ const Form = () => {
   const [pesoMuerto, setPesoMuerto] = useState("");
   const [banca, setBanca] = useState("");
 
-  const navigate = useNavigate(); // ✅ FALTABA ESTO
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    navigate("/home", {
-      state: {
-        sentadilla,
-        pesoMuerto,
-        banca,
-      },
-    });
+    // ✅ GUARDAR LOS RM
+    localStorage.setItem(
+      "rms",
+      JSON.stringify({
+        sentadilla: Number(sentadilla),
+        pesoMuerto: Number(pesoMuerto),
+        banca: Number(banca),
+      })
+    );
+
+    // ✅ IR A HOME (SIN STATE)
+    navigate("/home", { replace: true });
   };
 
   return (
