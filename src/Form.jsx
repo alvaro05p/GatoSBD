@@ -1,19 +1,29 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-const Principal = () => {
+const Form = () => {
   const [sentadilla, setSentadilla] = useState("");
   const [pesoMuerto, setPesoMuerto] = useState("");
   const [banca, setBanca] = useState("");
-  const [submitted, setSubmitted] = useState(false);
+
+  const navigate = useNavigate(); // ✅ FALTABA ESTO
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setSubmitted(true);
+
+    navigate("/home", {
+      state: {
+        sentadilla,
+        pesoMuerto,
+        banca,
+      },
+    });
   };
 
   return (
     <div className="principal-container">
       <h1>Apunta tus RM</h1>
+
       <form onSubmit={handleSubmit} className="principal-form">
         <div className="form-group">
           <label>
@@ -51,28 +61,12 @@ const Principal = () => {
           </label>
         </div>
 
-        <button type="submit" className="submit-button">Guardar</button>
+        <button type="submit" className="submit-button">
+          Guardar
+        </button>
       </form>
-
-      {submitted && (
-        <div className="resultados-container">
-          <h2>Tus máximos:</h2>
-          <div className="resultado-item">
-            <span>Sentadilla:</span>
-            <span className="resultado-valor">{sentadilla} kg</span>
-          </div>
-          <div className="resultado-item">
-            <span>Peso muerto:</span>
-            <span className="resultado-valor">{pesoMuerto} kg</span>
-          </div>
-          <div className="resultado-item">
-            <span>Press de banca:</span>
-            <span className="resultado-valor">{banca} kg</span>
-          </div>
-        </div>
-      )}
     </div>
   );
 };
 
-export default Principal;
+export default Form;
