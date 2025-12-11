@@ -12,6 +12,11 @@ const Intro = () => {
     }
   }, []);
 
+  // ⭐ Función que se ejecuta al pulsar "Empezar"
+  const handleClick = () => {
+    navigate("/principal");
+  };
+
   return (
     <>
       <h1 className="titulo">Gato SBD</h1>
