@@ -648,3 +648,141 @@ body {
     height: 20px;
   }
 }
+
+/* Estilos para los botones de finalización */
+
+.botones-finalizacion {
+  display: flex;
+  gap: 1rem;
+  max-width: 600px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.exito-button,
+.fallo-button {
+  flex: 1;
+  padding: 1.25rem 2rem;
+  font-size: 1.25rem;
+  font-weight: 700;
+  border-radius: 16px;
+  border: 2px solid;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Botón de Éxito */
+.exito-button {
+  background: rgba(31, 19, 19, 0.6);
+  border-color: rgba(220, 38, 38, 0.3);
+  color: #9ca3af;
+  cursor: not-allowed;
+}
+
+.exito-button:not(:disabled) {
+  background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+  border-color: #ef4444;
+  color: white;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(220, 38, 38, 0.5);
+}
+
+.exito-button:not(:disabled):hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 30px rgba(220, 38, 38, 0.7),
+              0 0 40px rgba(220, 38, 38, 0.3);
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+}
+
+.exito-button:not(:disabled):active {
+  transform: translateY(-1px);
+}
+
+.exito-button:not(:disabled)::before {
+  content: '🔥';
+  position: absolute;
+  left: 1.5rem;
+  font-size: 1.5rem;
+}
+
+/* Botón de Fallo */
+.fallo-button {
+  background: rgba(31, 19, 19, 0.8);
+  border-color: rgba(251, 146, 60, 0.4);
+  color: #fb923c;
+  backdrop-filter: blur(10px);
+  position: relative;
+}
+
+.fallo-button:hover {
+  background: rgba(251, 146, 60, 0.15);
+  border-color: #fb923c;
+  color: #fdba74;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(251, 146, 60, 0.3);
+}
+
+.fallo-button:active {
+  transform: translateY(0);
+}
+
+.fallo-button::before {
+  content: '⚠️';
+  position: absolute;
+  left: 1.5rem;
+  font-size: 1.5rem;
+}
+
+/* Animación de pulso para el botón de éxito cuando está habilitado */
+@keyframes pulso-exito {
+  0%, 100% {
+    box-shadow: 0 4px 20px rgba(220, 38, 38, 0.5);
+  }
+  50% {
+    box-shadow: 0 4px 30px rgba(220, 38, 38, 0.8),
+                0 0 50px rgba(220, 38, 38, 0.4);
+  }
+}
+
+.exito-button:not(:disabled) {
+  animation: pulso-exito 2s ease-in-out infinite;
+}
+
+/* Responsive para móvil */
+@media (max-width: 768px) {
+  .botones-finalizacion {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .exito-button,
+  .fallo-button {
+    font-size: 1.125rem;
+    padding: 1rem 1.5rem;
+  }
+
+  .exito-button::before,
+  .fallo-button::before {
+    left: 1rem;
+    font-size: 1.25rem;
+  }
+}
+
+/* Variante alternativa: Si quieres que el botón de fallo sea más discreto */
+.fallo-button-discreto {
+  background: transparent;
+  border-color: rgba(251, 146, 60, 0.3);
+  color: #9ca3af;
+  font-size: 1rem;
+  padding: 0.875rem 1.5rem;
+}
+
+.fallo-button-discreto:hover {
+  border-color: #fb923c;
+  color: #fb923c;
+  background: rgba(251, 146, 60, 0.1);
+}

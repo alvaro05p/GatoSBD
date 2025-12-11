@@ -36,7 +36,6 @@ const Entrenamiento = () => {
 
   const rm = rms[mapEjercicio(ejercicio)];
 
-  // Obtener la semana actual desde localStorage o por defecto 0
   const semanasGuardadas = JSON.parse(localStorage.getItem("semanaActual")) || {
     sentadilla: 0,
     pesoMuerto: 0,
@@ -47,11 +46,11 @@ const Entrenamiento = () => {
   const semanaInicial = semanasGuardadas[ejercicioKey] || 0;
 
   const [semanaActual, setSemanaActual] = useState(semanaInicial);
-
   const { repeticiones, series: totalSeries, porcentaje } = SEMANAS[semanaActual];
   const pesoTrabajo = Math.round(rm * porcentaje);
 
   const [series, setSeries] = useState(Array(totalSeries).fill(false));
+  const [falloVisible, setFalloVisible] = useState(true); // control para ocultar el botón de fallo
 
   const toggleSerie = (index) => {
     const nuevasSeries = [...series];
@@ -59,30 +58,43 @@ const Entrenamiento = () => {
     setSeries(nuevasSeries);
   };
 
-  const finalizarEntrenamiento = () => {
+  const seriesCompletadas = series.filter(Boolean).length;
+  const progreso = (seriesCompletadas / series.length) * 100;
+
+  // Función para marcar éxito
+  const handleExito = () => {
     const nuevasSemanas = { ...semanasGuardadas };
+    const nuevosRms = { ...rms };
 
     if (semanaActual < SEMANAS.length - 1) {
-      // Avanzar a la siguiente semana
       nuevasSemanas[ejercicioKey] = semanaActual + 1;
     } else {
-      // Si estaba en la última semana (2x2)
       nuevasSemanas[ejercicioKey] = 0; // volver a 5x5
-      // Aumentar RM en 5 kg
-      const nuevosRms = { ...rms };
-      nuevosRms[ejercicioKey] = nuevosRms[ejercicioKey] + 5;
+      nuevosRms[ejercicioKey] = nuevosRms[ejercicioKey] + 5; // subir RM
       localStorage.setItem("rms", JSON.stringify(nuevosRms));
     }
 
-    // Guardar la semana actualizada
     localStorage.setItem("semanaActual", JSON.stringify(nuevasSemanas));
 
-    // Ir a Home
+    // Ocultar botón de fallo
+    setFalloVisible(false);
+
     navigate("/home", { replace: true });
   };
 
-  const seriesCompletadas = series.filter(Boolean).length;
-  const progreso = (seriesCompletadas / series.length) * 100;
+  // Función para marcar fallo
+  const handleFallo = () => {
+    const nuevosRms = { ...rms };
+    nuevosRms[ejercicioKey] = Math.max(0, nuevosRms[ejercicioKey] - 5); // bajar RM
+    localStorage.setItem("rms", JSON.stringify(nuevosRms));
+
+    // Mantener la semana actual
+    const nuevasSemanas = { ...semanasGuardadas };
+    localStorage.setItem("semanaActual", JSON.stringify(nuevasSemanas));
+
+    // Reiniciar las series para repetir la semana
+    setSeries(Array(totalSeries).fill(false));
+  };
 
   return (
     <div className="entrenamiento-container">
@@ -129,13 +141,25 @@ const Entrenamiento = () => {
         ))}
       </div>
 
-      <button
-        className={`finalizar-button ${series.every(Boolean) ? 'activo' : ''}`}
-        onClick={finalizarEntrenamiento}
-        disabled={!series.every(Boolean)}
-      >
-        Finalizar Entreno
-      </button>
+      {/* BOTONES DESDE EL PRINCIPIO */}
+      <div className="botones-finalizacion">
+        <button
+          className="exito-button"
+          onClick={handleExito}
+          disabled={seriesCompletadas !== totalSeries} // solo habilitado al completar todas las series
+        >
+          Conseguido
+        </button>
+
+        {falloVisible && (
+          <button
+            className="fallo-button"
+            onClick={handleFallo}
+          >
+            Fallo
+          </button>
+        )}
+      </div>
     </div>
   );
 };
