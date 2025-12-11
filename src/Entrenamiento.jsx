@@ -50,7 +50,8 @@ const Entrenamiento = () => {
   const pesoTrabajo = Math.round(rm * porcentaje);
 
   const [series, setSeries] = useState(Array(totalSeries).fill(false));
-  const [falloVisible, setFalloVisible] = useState(true); // control para ocultar el botón de fallo
+  const [falloVisible, setFalloVisible] = useState(true);
+  const [mostrarModalFallo, setMostrarModalFallo] = useState(false);
 
   const toggleSerie = (index) => {
     const nuevasSeries = [...series];
@@ -61,7 +62,6 @@ const Entrenamiento = () => {
   const seriesCompletadas = series.filter(Boolean).length;
   const progreso = (seriesCompletadas / series.length) * 100;
 
-  // Función para marcar éxito
   const handleExito = () => {
     const nuevasSemanas = { ...semanasGuardadas };
     const nuevosRms = { ...rms };
@@ -69,31 +69,31 @@ const Entrenamiento = () => {
     if (semanaActual < SEMANAS.length - 1) {
       nuevasSemanas[ejercicioKey] = semanaActual + 1;
     } else {
-      nuevasSemanas[ejercicioKey] = 0; // volver a 5x5
-      nuevosRms[ejercicioKey] = nuevosRms[ejercicioKey] + 5; // subir RM
+      nuevasSemanas[ejercicioKey] = 0;
+      nuevosRms[ejercicioKey] = nuevosRms[ejercicioKey] + 5;
       localStorage.setItem("rms", JSON.stringify(nuevosRms));
     }
 
     localStorage.setItem("semanaActual", JSON.stringify(nuevasSemanas));
-
-    // Ocultar botón de fallo
     setFalloVisible(false);
-
     navigate("/home", { replace: true });
   };
 
-  // Función para marcar fallo
   const handleFallo = () => {
+    setMostrarModalFallo(true);
+  };
+
+  const handleContinuarDespuesFallo = () => {
     const nuevosRms = { ...rms };
-    nuevosRms[ejercicioKey] = Math.max(0, nuevosRms[ejercicioKey] - 5); // bajar RM
+    nuevosRms[ejercicioKey] = Math.max(0, nuevosRms[ejercicioKey] - 5);
     localStorage.setItem("rms", JSON.stringify(nuevosRms));
 
-    // Mantener la semana actual
     const nuevasSemanas = { ...semanasGuardadas };
     localStorage.setItem("semanaActual", JSON.stringify(nuevasSemanas));
 
-    // Reiniciar las series para repetir la semana
-    setSeries(Array(totalSeries).fill(false));
+    // Cerrar el modal
+    setMostrarModalFallo(false);
+
   };
 
   return (
@@ -141,12 +141,11 @@ const Entrenamiento = () => {
         ))}
       </div>
 
-      {/* BOTONES DESDE EL PRINCIPIO */}
       <div className="botones-finalizacion">
         <button
           className="exito-button"
           onClick={handleExito}
-          disabled={seriesCompletadas !== totalSeries} // solo habilitado al completar todas las series
+          disabled={seriesCompletadas !== totalSeries}
         >
           Conseguido
         </button>
@@ -160,6 +159,28 @@ const Entrenamiento = () => {
           </button>
         )}
       </div>
+
+      {/* Modal de Fallo */}
+      {mostrarModalFallo && (
+        <div className="modal-overlay-fallo">
+          <div className="modal-fallo-content">
+            <div className="bocadillo-fallo">
+              <p>Vaya, has fallado. Seguimos dándole con menos peso.</p>
+            </div>
+            <img 
+              src="/img/gatoPower.png" 
+              alt="Gato SBD"
+              className="gato-fallo"
+            />
+            <button 
+              className="continuar-fallo-button"
+              onClick={handleContinuarDespuesFallo}
+            >
+              Continuar
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

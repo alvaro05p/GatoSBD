@@ -702,13 +702,6 @@ body {
   transform: translateY(-1px);
 }
 
-.exito-button:not(:disabled)::before {
-  content: '🔥';
-  position: absolute;
-  left: 1.5rem;
-  font-size: 1.5rem;
-}
-
 /* Botón de Fallo */
 .fallo-button {
   background: rgba(31, 19, 19, 0.8);
@@ -728,13 +721,6 @@ body {
 
 .fallo-button:active {
   transform: translateY(0);
-}
-
-.fallo-button::before {
-  content: '⚠️';
-  position: absolute;
-  left: 1.5rem;
-  font-size: 1.5rem;
 }
 
 /* Animación de pulso para el botón de éxito cuando está habilitado */
@@ -785,4 +771,324 @@ body {
   border-color: #fb923c;
   color: #fb923c;
   background: rgba(251, 146, 60, 0.1);
+}
+
+/* Modal de Fallo */
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 1rem;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.modal-fallo {
+  background: linear-gradient(135deg, #1f1313 0%, #2a1515 100%);
+  border: 3px solid rgba(220, 38, 38, 0.5);
+  border-radius: 24px;
+  padding: 2.5rem;
+  max-width: 500px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6),
+              0 0 80px rgba(220, 38, 38, 0.3);
+  animation: slideUp 0.4s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.modal-fallo::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 6px;
+  background: linear-gradient(90deg, #dc2626 0%, #ef4444 50%, #f87171 100%);
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.modal-gato {
+  width: 200px;
+  height: auto;
+  margin: 0 auto 1.5rem;
+  display: block;
+  animation: bounce 0.6s ease;
+  filter: drop-shadow(0 10px 30px rgba(220, 38, 38, 0.3));
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+.modal-titulo {
+  font-size: 2rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #dc2626 0%, #ef4444 50%, #f87171 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 1rem;
+  letter-spacing: -0.02em;
+}
+
+.modal-mensaje {
+  font-size: 1.125rem;
+  color: #d1d5db;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+  font-weight: 500;
+}
+
+.modal-continuar-button {
+  background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+  color: white;
+  font-size: 1.25rem;
+  font-weight: 700;
+  padding: 1rem 3rem;
+  border: 2px solid #ef4444;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 20px rgba(220, 38, 38, 0.5);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  width: 100%;
+}
+
+.modal-continuar-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 30px rgba(220, 38, 38, 0.7),
+              0 0 40px rgba(220, 38, 38, 0.3);
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+}
+
+.modal-continuar-button:active {
+  transform: translateY(-1px);
+}
+
+/* Responsive para móvil */
+@media (max-width: 768px) {
+  .modal-fallo {
+    padding: 2rem 1.5rem;
+  }
+
+  .modal-gato {
+    width: 150px;
+  }
+
+  .modal-titulo {
+    font-size: 1.5rem;
+  }
+
+  .modal-mensaje {
+    font-size: 1rem;
+  }
+
+  .modal-continuar-button {
+    font-size: 1.125rem;
+    padding: 0.875rem 2rem;
+  }
+}
+
+/* Modal de Fallo - Estilo integrado con el gato */
+
+.modal-overlay-fallo {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 1rem;
+  animation: fadeIn 0.3s ease;
+}
+
+.modal-fallo-content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 600px;
+  width: 100%;
+  animation: slideUp 0.4s ease;
+}
+
+.bocadillo-fallo {
+  position: relative;
+  background: #000000;
+  border: 4px solid #dc2626;
+  border-radius: 80px;
+  padding: 2rem 2.5rem;
+  margin-bottom: -50px;
+  z-index: 2;
+  max-width: 400px;
+}
+
+.bocadillo-fallo::after {
+  content: '';
+  position: absolute;
+  bottom: -30px;
+  right: 80px;
+  width: 0;
+  height: 0;
+  border-left: 25px solid transparent;
+  border-right: 25px solid transparent;
+  border-top: 35px solid #dc2626;
+  transform: rotate(-15deg);
+}
+
+.bocadillo-fallo::before {
+  content: '';
+  position: absolute;
+  bottom: -23px;
+  right: 84px;
+  width: 0;
+  height: 0;
+  border-left: 22px solid transparent;
+  border-right: 22px solid transparent;
+  border-top: 30px solid #000000;
+  transform: rotate(-15deg);
+  z-index: 1;
+}
+
+.bocadillo-fallo p {
+  color: white;
+  font-size: 1.25rem;
+  font-weight: 600;
+  text-align: center;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.gato-fallo {
+  width: 350px;
+  height: auto;
+  z-index: 1;
+  animation: bounce 0.6s ease;
+  filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.8));
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-15px);
+  }
+}
+
+.continuar-fallo-button {
+  background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+  color: white;
+  font-size: 1.5rem;
+  font-weight: 700;
+  padding: 1.25rem 4rem;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 30px rgba(220, 38, 38, 0.6);
+  letter-spacing: 0.02em;
+  margin-top: 2rem;
+  z-index: 3;
+  position: relative;
+}
+
+.continuar-fallo-button:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 12px 40px rgba(220, 38, 38, 0.8);
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+}
+
+.continuar-fallo-button:active {
+  transform: translateY(-1px) scale(1.02);
+}
+
+/* Responsive para móvil */
+@media (max-width: 768px) {
+  .bocadillo-fallo {
+    padding: 1.5rem 2rem;
+    max-width: 320px;
+    margin-bottom: -40px;
+  }
+
+  .bocadillo-fallo p {
+    font-size: 1rem;
+  }
+
+  .bocadillo-fallo::after {
+    bottom: -25px;
+    right: 60px;
+    border-left: 20px solid transparent;
+    border-right: 20px solid transparent;
+    border-top: 28px solid #dc2626;
+  }
+
+  .bocadillo-fallo::before {
+    bottom: -19px;
+    right: 63px;
+    border-left: 18px solid transparent;
+    border-right: 18px solid transparent;
+    border-top: 24px solid #000000;
+  }
+
+  .gato-fallo {
+    width: 280px;
+  }
+
+  .continuar-fallo-button {
+    font-size: 1.25rem;
+    padding: 1rem 3rem;
+    margin-top: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .bocadillo-fallo {
+    padding: 1.25rem 1.5rem;
+    max-width: 280px;
+  }
+
+  .gato-fallo {
+    width: 240px;
+  }
 }
