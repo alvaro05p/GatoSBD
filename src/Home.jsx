@@ -1,5 +1,6 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { FaTrash } from "react-icons/fa"; // Icono de papelera
 
 const SEMANAS = [
   { nombre: "5x5" },
@@ -9,11 +10,19 @@ const SEMANAS = [
 ];
 
 const Home = () => {
+  const navigate = useNavigate();
+
   const data = JSON.parse(localStorage.getItem("rms"));
   const semanas = JSON.parse(localStorage.getItem("semanaActual")) || {
     sentadilla: 0,
     pesoMuerto: 0,
     banca: 0,
+  };
+
+  // Función para borrar localStorage y volver al Intro
+  const handleClearData = () => {
+    localStorage.clear();
+    navigate("/", { replace: true });
   };
 
   if (!data) {
@@ -28,6 +37,15 @@ const Home = () => {
 
   return (
     <div className="home-container">
+      {/* Icono de papelera */}
+      <div
+        className="papelera-local"
+        onClick={handleClearData}
+        title="Borrar datos"
+      >
+        <FaTrash/>
+      </div>
+
       <h1 className="home-titulo">Tus Máximos</h1>
 
       <div className="maximos-grid">
@@ -40,7 +58,7 @@ const Home = () => {
 
         <Link to="/entrenamiento/peso-muerto" className="maximo-card">
           <div className="ejercicio-nombre">Peso Muerto</div>
-          <div></div><div className="peso-numero">{pesoMuerto}</div>
+          <div className="peso-numero">{pesoMuerto}</div>
           <div className="peso-unidad">kg</div>
           <div className="semana-texto">{SEMANAS[semanas.pesoMuerto].nombre}</div>
         </Link>
