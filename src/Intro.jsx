@@ -1,11 +1,16 @@
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 const Intro = () => {
-  const navigate = useNavigate(); // hook de React Router
+  const navigate = useNavigate();
 
-  const handleClick = () => {
-    navigate("/principal"); // ruta de la página principal
-  };
+  // ⭐ Chequeo automático al cargar Intro
+  useEffect(() => {
+    const rms = localStorage.getItem("rms");
+    if (rms) {
+      navigate("/home", { replace: true });
+    }
+  }, []);
 
   return (
     <>
