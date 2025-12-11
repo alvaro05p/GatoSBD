@@ -1,12 +1,6 @@
+import React from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
-useEffect(() => {
-  const rms = localStorage.getItem("rms");
-  if (rms) {
-    navigate("/home", { replace: true });
-  }
-}, []);
 
 const Form = () => {
   const [sentadilla, setSentadilla] = useState("");

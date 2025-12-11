@@ -1,5 +1,7 @@
+import React from "react";
+import { useState, useEffect } from "react";  // ✅ añade useEffect
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+
 
 const Intro = () => {
   const navigate = useNavigate();
